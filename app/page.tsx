@@ -3,8 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Mic, MicOff, RotateCcw, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { ScrollArea } from '@/components/ui/scroll-area'
 
 interface Message {
   id: string
@@ -90,12 +88,9 @@ export default function HomePage() {
   // Auto-scroll to latest message
   useEffect(() => {
     if (scrollAreaRef.current) {
-      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]')
-      if (scrollContainer) {
-        setTimeout(() => {
-          scrollContainer.scrollTop = scrollContainer.scrollHeight
-        }, 0)
-      }
+      setTimeout(() => {
+        scrollAreaRef.current!.scrollTop = scrollAreaRef.current!.scrollHeight
+      }, 0)
     }
   }, [messages])
 
@@ -319,7 +314,7 @@ export default function HomePage() {
         {/* Conversation Transcript */}
         {state.hasStarted && (
           <div className="w-full mt-12 flex-1 max-w-2xl">
-            <ScrollArea className="h-80 rounded-lg border border-slate-700 bg-slate-800/50 p-4" ref={scrollAreaRef}>
+            <div className="h-80 rounded-lg border border-slate-700 bg-slate-800/50 p-4 overflow-y-auto" ref={scrollAreaRef}>
               <div className="space-y-4">
                 {messages.length === 0 ? (
                   <p className="text-gray-400 text-center text-sm py-8">Start speaking to begin the conversation</p>
@@ -345,7 +340,7 @@ export default function HomePage() {
                   ))
                 )}
               </div>
-            </ScrollArea>
+            </div>
           </div>
         )}
       </div>
